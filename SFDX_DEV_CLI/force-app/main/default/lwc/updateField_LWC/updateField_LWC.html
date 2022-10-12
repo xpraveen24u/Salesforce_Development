@@ -4,11 +4,11 @@
                 <!-- Input Username -->
             <lightning-layout vertical-align="end">
                 <lightning-layout-item flexibility="grow">
-                    <lightning-input type="text" value={name}  label="Enter name"></lightning-input>
+                    <lightning-input type="text" value={name} onchange={updateName} label="Enter name"></lightning-input>
                 </lightning-layout-item>
 
             <lightning-layout-item class="slds-var-p-left_small">
-                <lightning-button label="Submit" variant="brand" ></lightning-button>
+                <lightning-button label="Submit" variant="brand" onclick={handle_Submit}></lightning-button>
             </lightning-layout-item>
 
             </lightning-layout>

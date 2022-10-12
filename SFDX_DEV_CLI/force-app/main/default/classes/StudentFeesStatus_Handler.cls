@@ -20,6 +20,7 @@ public class StudentFeesStatus_Handler
         {
             insert caselist;
         }
+        
         list<Student_c> std12=[Select id,Casec from Student_c];
         System.debug(std12);
         for(Student__c std1: std12)

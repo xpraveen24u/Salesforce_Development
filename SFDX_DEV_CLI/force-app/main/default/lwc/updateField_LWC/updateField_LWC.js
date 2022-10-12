@@ -4,8 +4,12 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 export default class UpdateField_LWC extends LightningElement {
     name; 
 
+    updateName(event){
+      this.name = event.target.value;
+    }
+
     handle_Submit(event){
-        // Refering to first method and passwing parameters.
+        // Refering to first method and passing parameters.
        
         fieldRecordUpdate({ 
             record : this.name
