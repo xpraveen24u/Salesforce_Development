@@ -5,7 +5,7 @@ public  class StudentFeeStatus_Handler {
         list<Case> caselist=new list<Case>();
         list<Id> caseIds=new list<Id>();
         list<Id> studentIds=new list<Id>();
-        Map<Id,Integer> mapN = new Map<Id,Integer> ();
+        Map<Id,String> mapN = new Map<Id,String> ();
         for(Student__c std:stdlist)
         {
             Case case1=new Case();
@@ -25,12 +25,6 @@ public  class StudentFeeStatus_Handler {
             insert caselist;
         }
 
-        // if(!caselist.isEmpty()){
-        //  for (Case cs : caselist) {
-        //     caseIds.add(cs.Id);
-        //  }
-        // }
-
         List<Case> caseWithNumber = [SELECT Id, CaseNumber,Student__c FROM Case WHERE Student__c In :studentIds];
         if(!caseWithNumber.isEmpty()){
             for (Case cst : caseWithNumber) {
@@ -38,10 +32,10 @@ public  class StudentFeeStatus_Handler {
             }
         }
 
-        List<Student__c> stuList = [SELECT Id, Case_Number__c FROM Student__c WHERE Id In: studentIds];
+        List<Student__c> stuList = [SELECT Id, Student_Case__c FROM Student__c WHERE Id In: studentIds];
         if(!stuList.isEmpty()){
             for (Student__c stu : stuList) {
-                stu.Case_Number__c = mapN.get(stu.Id);
+                stu.Student_Case__c = mapN.get(stu.Id);
         }
         
         update   stuList;
