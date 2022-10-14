@@ -3,9 +3,11 @@ trigger StudentFee on Student__c (after insert,after update) {
  for (Student__c student : Trigger.New) {
     studentList.add(student);
  }
- if(recursiveClass.triggerEnd == true) {
-    StudentFeeStatus_Handler.FeesStudent(studentList); 
-    recursiveClass.stopTrigger();
- }
+ if(recursiveClass.triggerEnd==true){
+       recursiveClass.triggerEnd = false;
+     StudentFeeStatus_Handler.FeesStudent(studentList);  
+      // recursiveClass.stopTrigger();
+      
+   }
 
 }
