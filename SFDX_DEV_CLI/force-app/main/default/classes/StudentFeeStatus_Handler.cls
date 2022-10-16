@@ -33,11 +33,12 @@ public  class StudentFeeStatus_Handler {
         }
 
         List<Student__c> stuList = [SELECT Id, Student_Case__c FROM Student__c WHERE Id In: studentIds];
+       
         if(!stuList.isEmpty()){
             for (Student__c stu : stuList) {
                 stu.Student_Case__c = mapN.get(stu.Id);
         }
-        
+       
         update   stuList;
         }
         
