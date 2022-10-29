@@ -1,0 +1,42 @@
+<template>
+<lightning-card title="Data table with Hex Code">
+<lightning-layout>
+    <template if:true={accountList}>
+        <table id="accountTable">
+<thead>
+<tr>
+<th>Name</th>
+<th>Id</th>
+<th>Created Date</th>
+<th>Ongoing Status</th>
+</tr>
+</thead>
+<tbody>
+<template for:each={accountList} for:item="account">
+    <template if:true={account.successCircle}>
+        <tr  key={account.Id}>
+        <td> {account.Name}</td>
+        <td> {account.Id}</td>
+        <td> {account.CreatedDate}</td>
+        <td> <lightning-icon icon-name="utility:record" class="green-background" ></lightning-icon></td></tr> </template>
+
+        <template if:true={account.processingCircle}>
+            <tr  key={account.Id}>
+            <td> {account.Name}</td>
+            <td> {account.Id}</td>
+            <td> {account.CreatedDate}</td>
+            <td> <lightning-icon icon-name="utility:record" class="yellow-background" ></lightning-icon></td></tr> </template>
+
+            <template if:true={account.errorCircle}>
+                <tr  key={account.Id}>
+                <td> {account.Name}</td>
+                <td> {account.Id}</td>
+                <td> {account.CreatedDate}</td>
+                <td> <lightning-icon icon-name="utility:record" class="red-background" ></lightning-icon></td></tr> </template>
+            </template>
+           </tbody>
+        </table>
+    </template>
+</lightning-layout>
+</lightning-card>
+</template>

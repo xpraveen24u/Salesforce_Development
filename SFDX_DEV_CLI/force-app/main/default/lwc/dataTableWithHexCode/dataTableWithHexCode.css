@@ -1,0 +1,14 @@
+.green-background {
+    /* background: green; */
+    --sds-c-icon-color-foreground-default: green;
+}
+
+.yellow-background {
+    /* background: green; */
+    --sds-c-icon-color-foreground-default: yellow;
+}
+
+.red-background {
+    /* background: green; */
+    --sds-c-icon-color-foreground-default: red;
+}
