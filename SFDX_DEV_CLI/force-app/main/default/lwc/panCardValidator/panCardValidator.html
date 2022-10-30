@@ -1,0 +1,27 @@
+<template>
+   <lightning-card title="PAN Card Validator">
+    <div class="slds-var-m-around_large">
+    <lightning-layout vertical-align="end" >
+        <lightning-layout-item flexibility="grow">
+            <lightning-input type="search" value={pancard} onchange={panCardNumber} label="Enter Pan Card Number"></lightning-input>
+        </lightning-layout-item>
+
+        
+        <lightning-layout-item class="slds-var-p-left_small">
+            <lightning-button label="Search" variant="brand" onclick={getPanCardDetails}></lightning-button>
+        </lightning-layout-item>
+    </lightning-layout>
+    <br />
+
+    <!-- Display User Details -->
+    <div if:true={userPopulated}>
+        <div class="slds-var-p-vertical_xxx-small slds-text-heading_small"><b>PAN Number:</b> {user.pancardNumber}</div>
+        <div class="slds-var-p-vertical_xxx-small slds-text-heading_small"><b>Name on Card:</b> {user.nameOnCard}</div>
+        <div class="slds-var-p-vertical_xxx-small slds-text-heading_small"><b>First Name:</b> {user.firstName}</div>
+        <div class="slds-var-p-vertical_xxx-small slds-text-heading_small"><b>Last Name:</b> {user.lastName}</div>
+        <div class="slds-var-p-vertical_xxx-small slds-text-heading_small"><b>Aadhar Seed :</b> {user.aadharSeed}</div>  
+        <div class="slds-var-p-vertical_xxx-small slds-text-heading_small"><b>Satus :</b> {user.status}</div> 
+    </div>
+    </div>
+   </lightning-card> 
+</template>
