@@ -26,15 +26,13 @@ export default class PanCardValidator extends LightningElement {
            
             fetch(api_URL, options)
                 .then(response => {
-                    if (response.status == "completed") {
-                        console.log(response);
+                    if (response.status == 200 && response.statusText == "OK")  {
                         return response.json();  
                     } else {
                         throw Error(response);
                   }
                 })
                 .then(panCardData => {
-                    console.log(panCardData.result.source_output.id_number);
                     this.user = {
                         pancardNumber: panCardData.result.source_output.id_number,
                         nameOnCard: panCardData.result.source_output.name_on_card,

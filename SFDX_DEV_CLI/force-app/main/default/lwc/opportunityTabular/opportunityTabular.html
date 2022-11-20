@@ -1,0 +1,21 @@
+<template>
+    <lightning-card title="Opportunity Tabular Data">
+      <div class = "slds-m-around_medium">
+        <!-- <template if:true={oppRecords.data}>  -->
+        <lightning-datatable 
+        key-field="Id"
+        data={oppRecords.data}
+        columns={columns}
+        onsave={handleSave}
+        draft-values={draftValues}>
+            
+        </lightning-datatable>
+        <!-- </template> -->
+        <template if:true={oppRecords.error}> 
+
+        </template>
+      </div>
+
+        
+    </lightning-card>
+</template>
