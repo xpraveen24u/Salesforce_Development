@@ -1,4 +1,4 @@
-import { LightningElement, wire,api  } from 'lwc';
+import { LightningElement, wire,api ,track } from 'lwc';
 import getOpportunity from '@salesforce/apex/opportunityTabular.getOpportunity'; 
 import { refreshApex } from '@salesforce/apex';
 import { updateRecord } from 'lightning/uiRecordApi';
@@ -47,41 +47,34 @@ const COLS = [
 
 ];
 export default class OpportunityTabular extends LightningElement {
+    
     @api recordId;
     columns = COLS;
     draftValues = [];
-    data = [];
-    prepareData = {};
+    @track oppData =[];
     
 
     @wire(getOpportunity) oppRecords({ data, error }) {
         if (data) {
-            console.log(data);
-            // console.log(data.Name);
+            let opportunityArray = [];
             data.forEach(item => {
-                // console.log(item);
-                // console.log(item.Name);
-                // console.log(item.Account);
-           
-            let prepareData = {
-                    Name: item.Name,
-                    accountName: item.Account.Name,
-                    contactName: item.OpportunityContactRoles[0].Contact.Name,
-                    List_Price: item.OpportunityLineItems[0].TotalPrice,
-                    Discount: item.Discount__c,
-                    Discount_Amount: item.OpportunityLineItems[0].TotalPrice * (item.Discount__c / 100),
-                    Total_Amount: (item.OpportunityLineItems[0].TotalPrice) - (item.OpportunityLineItems[0].TotalPrice * (item.Discount__c / 100))
+            let item_price =    item.hasOwnProperty('OpportunityLineItems') ?  item.OpportunityLineItems[0].TotalPrice : 0
+            let  oppReadyData  = 
+                  {
+                    "Name": item.Name,
+                    "accountName": item.Account.Name,
+                    "contactName": item.hasOwnProperty('OpportunityContactRoles') ? item.OpportunityContactRoles[0].Contact.Name : '',
+                    "List_Price": item_price,
+                    "Discount": item.Discount__c,
+                    "Discount_Amount": (item.Discount__c) ? item_price * (item.Discount__c / 100) : 0,
+                    "Total_Amount":(item_price * (item.Discount__c / 100) )? (item_price) - (item_price * (item.Discount__c / 100)) : item_price
 
-                }
-                console.log(prepareData);
-                
-               
-            
+                };
+                opportunityArray.push(oppReadyData);   
             });
-            console.log(prepareData);
-            this.data = prepareData;
+             this.oppData = opportunityArray;
         } else if (error) {
-            
+            console.log(error);
         }
     };
          
