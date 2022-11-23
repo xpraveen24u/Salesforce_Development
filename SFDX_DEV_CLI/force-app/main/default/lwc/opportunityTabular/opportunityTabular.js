@@ -1,4 +1,4 @@
-import { LightningElement, wire,api ,track } from 'lwc';
+/* import { LightningElement, wire,api ,track } from 'lwc';
 import getOpportunity from '@salesforce/apex/opportunityTabular.getOpportunity'; 
 import { refreshApex } from '@salesforce/apex';
 import { updateRecord } from 'lightning/uiRecordApi';
@@ -106,7 +106,7 @@ export default class OpportunityTabular extends LightningElement {
             );
 
             // Display fresh data in the datatable
-            await refreshApex(this.oppRecords);
+            await refreshApex(this.oppData);
         } catch (error) {
             this.dispatchEvent(
                 new ShowToastEvent({
@@ -119,4 +119,133 @@ export default class OpportunityTabular extends LightningElement {
     }
   
 
+}*/
+
+import { LightningElement,wire, api, track } from 'lwc';
+import getOpportunity from '@salesforce/apex/opportunityTabular.getOpportunity'; 
+import updateDiscountValue from '@salesforce/apex/opportunityTabular.updateDiscountValue'; 
+import { updateRecord } from 'lightning/uiRecordApi';
+import { refreshApex } from '@salesforce/apex';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+export default class DataTableTabular extends LightningElement {
+    @api recordOppId;
+    @api accountId;
+    @api OpportunityContactRoles;
+    @track opportunities;
+    @track error;
+    @track discount;
+    @track discountAmount;
+    @track totalAmount;
+    objectOpportunity={'sObjecttype': 'Opportunity'}
+
+    updateDiscount(event){
+        let  oppIdData = event.target.id;
+        let OppId = oppIdData.split("-");
+        this.recordOppId = OppId[0];
+        this.discount = event.target.value;
+    }
+    connectedCallback(){
+        this.loadData();
+    }
+
+    @api
+    loadData() {
+       
+        getOpportunity({
+            
+            accountId: this.accountId,
+            OpportunityContactRoles: this.OpportunityContactRoles
+        })
+        .then(result => {
+            this.opportunities = result;
+        })
+        .catch(error => {
+            this.error = error.message;
+        })
+    }
+  
+
+     handleSubmit(event){
+        updateDiscountValue({ 
+
+            recordOppId : this.recordOppId,
+            discount :   this.discount
+          
+        })
+        .then(result => {
+            const event = new ShowToastEvent({
+                  title: 'Success',
+                    message: 'Opportunity updated',
+                    variant: 'success'
+                
+            });
+            this.dispatchEvent(event);
+            window.location.reload();
+        })
+        .catch(error => {
+            const event = new ShowToastEvent({
+                title: 'Error updating or reloading opportunity',
+                message: error.body.message,
+                variant: 'error'
+            });
+            this.dispatchEvent(event);
+        });
+    }
+
+     /* handleDiscount(event){
+          this.discount = event.target.value;
+          this.discountAmount = (this.discount/100) * this.opportunities.TotalPrice;
+          this.totalAmount = this.opportunities.TotalPrice - this.discountAmount;
+        //   this.objectOpportunity.Discount__c = this.template.querySelector('Lightning-Input[data-formfield="Discount"]').value;
+        //   console.log('Input----'+this.objectOpportunity.Discount__c);
+        //   dataMethod({dic:this.objectOpportunity,Name:this.opportunities})
+        //   .then(result=> {
+            
+        //   })
+        //   .catch(error=>{
+
+        //   })
+          
+      }*/
+
+
+
+    /*async handleSave(event) {
+        // Convert datatable draft values into record objects
+        const records = event.detail.draftValues.slice().map((draftValue) => {
+            const fields = Object.assign({}, draftValue);
+            return { fields };
+        });
+
+        // Clear all datatable draft values
+        this.draftValues = [];
+
+        try {
+            // Update all records in parallel thanks to the UI API
+            const recordUpdatePromises = records.map((record) =>
+                updateRecord(record)
+            );
+            await Promise.all(recordUpdatePromises);
+
+            // Report success with a toast
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Success',
+                    message: 'Opportunity updated',
+                    variant: 'success'
+                })
+            );
+
+            // Display fresh data in the datatable
+            await refreshApex(this.opportunities);
+        } catch (error) {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error updating or reloading opportunity',
+                    message: error.body.message,
+                    variant: 'error'
+                })
+            );
+        }
+    }*/
 }

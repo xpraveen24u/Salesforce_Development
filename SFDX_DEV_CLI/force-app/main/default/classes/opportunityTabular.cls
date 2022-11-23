@@ -1,4 +1,4 @@
-public with sharing class opportunityTabular {
+/*public with sharing class opportunityTabular {
     @AuraEnabled(cacheable=true)
     public static List<Opportunity> getOpportunity(){
         try {
@@ -12,4 +12,43 @@ public with sharing class opportunityTabular {
             throw new AuraHandledException(e.getMessage());
         }
     }
+
+    @AuraEnabled
+    public static string dataMethod(Integer dic){
+        try {
+            return Null;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+}*/
+
+public with sharing class opportunityTabular {
+    @AuraEnabled(cacheable=true)
+  public static List<Opportunity> getOpportunity(){
+      try {
+     
+      List<Opportunity>  oppData = [SELECT Id, Name, Account.Name,(SELECT Contact.Name FROM OpportunityContactRoles WHERE IsPrimary = TRUE), List_Price__c	, Discount__c, Calculate_Discount_Amount__c, Calculate_Total_Amount__c 
+      FROM Opportunity where Status__c= 'In Progress'  WITH SECURITY_ENFORCED];
+         
+         return   oppData   ; 
+      } catch (Exception e) {
+          throw new AuraHandledException(e.getMessage());
+      }
+  }
+  @AuraEnabled (cacheable=false)
+  public static string updateDiscountValue(Id recordOppId, Integer discount){
+      try {
+        if(recordOppId !=NULL && discount !=0){
+            Opportunity opp = new Opportunity();
+            opp.Id =  recordOppId;
+            opp.Discount__c = discount;
+            update opp;
+            
+        }
+        return null;
+      } catch (Exception e) {
+          throw new AuraHandledException(e.getMessage());
+      }
+  }
 }

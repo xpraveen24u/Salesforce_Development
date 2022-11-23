@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <lightning-card title="Opportunity Tabular Data">
       <div class = "slds-m-around_medium">
         <template if:true={oppData}> 
@@ -16,4 +16,89 @@
 
         
     </lightning-card>
+</template> -->
+<template>
+  <table class="slds-table slds-table_bordered slds-table_striped slds-no-row-hover slds-table_cell-buffer">
+      <thead>
+          <tr class="slds-text-title_caps">
+              <th scope="col">
+                  <div class="slds-truncate" title="Opportunity Name">Opportunity</div>
+              </th>
+              <th scope="col">
+                  <div class="slds-truncate" title="Account Name">Account Name</div>
+              </th>
+              <th scope="col">
+                  <div class="slds-truncate" title="Primary Contact">Primary Contact</div>
+              </th>
+              <th scope="col">
+                  <div class="slds-truncate" title="List Price">List Price</div>
+              </th>
+              <th scope="col">
+                  <div class="slds-truncate" title="Discount%">Discount%</div>
+              </th>
+              <th scope="col">
+                  <div class="slds-truncate" title="Discount Amount">Discount Amount</div>
+              </th>
+              <th scope="col">
+                  <div class="slds-truncate" title="Total Amount">Total Amount</div>
+              </th>
+          </tr>
+      </thead>
+      <tbody>
+          <template for:each={opportunities} for:item="opp">
+              
+              <tr key={opp.Id}>
+                  <th scope="row">
+                      <div class="slds-truncate">{opp.Name}</div>
+                  </th>
+                  <td>
+                      <div class="slds-truncate">{opp.Account.Name}</div>
+                  </td>
+                  <td>
+                      <div class="slds-truncate">
+                      <template for:each={opp.OpportunityContactRoles} for:item="dataValue">
+                        <td key={dataValue.Id}>{dataValue.Contact.Name}</td>
+                    </template>
+                  </div>
+                  </td>
+                 
+                  <td>
+                      <div class="slds-truncate">{opp.List_Price__c}</div>
+                  </td>
+                  <td>
+                      <div class="slds-truncate">
+                          <lightning-input type="Percent" data-formfield="Discount" value={opp.Discount__c} class="slds-m-left_small"  onchange={updateDiscount}  id={opp.Id}></lightning-input>
+                      </div>
+                  </td>
+                  <td>
+                      <div class="slds-truncate">
+                        {opp.Calculate_Discount_Amount__c}
+                      </div>
+                  </td>
+                  <td>
+                      <div class="slds-truncate"  >
+                        {opp.Calculate_Total_Amount__c} 
+                      </div>
+                  </td>
+              </tr>
+              
+          </template>
+          
+      </tbody>
+     
+   
+      
+  </table>  
+  <div class="slds-var-m-around_large">
+    <lightning-layout vertical-align="end">
+    
+    <lightning-layout-item class="slds-var-p-left_small">
+        <lightning-button label="Submit" variant="brand" onclick={handleSubmit}></lightning-button>
+    </lightning-layout-item>
+    
+    </lightning-layout>
+    <br />
+    
+    
+    </div> 
 </template>
