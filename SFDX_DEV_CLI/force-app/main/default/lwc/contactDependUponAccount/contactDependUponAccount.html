@@ -1,0 +1,82 @@
+<template>
+    <lightning-card title="Contact Based on Account Selection">
+        <lightning-layout>
+            <div class="slds-grid slds-grid_vertical">
+                 <div class="slds-col">
+
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <table class="slds-table slds-table_bordered slds-table_striped slds-no-row-hover slds-table_cell-buffer">
+                        <thead>
+                            <tr class="slds-text-title_caps">
+                                <th scope="col">
+                                    <div class="slds-truncate" title="accountName">Account</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="contact"> Contact on Account Search</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="phone">Phone No.</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="slds-truncate">
+                                        <lightning-input type="search" data-formfield="Account" class="slds-m-left_small" value={accountName} onchange={handleAccount} ></lightning-input>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate">   
+                                  <div class="slds-form-element__control">
+                                          <div class="slds-select_container">
+                                            <select class="slds-select"  id="select-01"  onchange={handleContact}>
+                                                <template for:each={accountData} for:item="account">
+                                                    <template  if:true={account.Contacts} for:each = {account.Contacts} for:item="con">
+                                                        <option key={con.Id} value={con.Name} selected={contact}>{con.Name}</option>
+                                                     </template>    
+                                                </template>
+                                        
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    
+                                </td>
+                                <td>
+                                    <div class="slds-truncate">
+                                        <lightning-input type="phone" data-formfield="phone" value={phone} class="slds-m-left_small"  onchange={handlePhone}   ></lightning-input>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="slds-var-m-around_large">
+                        <lightning-layout vertical-align="end">
+                        
+                        <lightning-layout-item class="slds-var-p-left_small">
+                            <lightning-button label="Submit" variant="brand" onclick={handleSubmit}></lightning-button>
+                        </lightning-layout-item>
+                        
+                        </lightning-layout>
+                        <br />
+                            
+                        </div> 
+                </lightning-layout-item>
+            </div>
+            
+
+            <br/>
+            <div class="slds-col">
+
+           <lightning-layout-item flexibility="auto" padding="auto-small">
+                <c-contact-Depend-Upon-Account-Child></c-contact-Depend-Upon-Account-Child>
+            
+           </lightning-layout-item>
+        </div>
+
+        </div>
+        </lightning-layout>
+        
+    </lightning-card>
+</template>
